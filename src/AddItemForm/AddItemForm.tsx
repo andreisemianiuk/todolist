@@ -1,5 +1,7 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import styles from './AddItemForm.module.css'
+import { Button } from '@material-ui/core'
+
 
 type AddItemFormType = {
   addItem: (title: string) => void
@@ -41,7 +43,8 @@ export const AddItemForm = (props: AddItemFormType) => {
         onKeyPress={onKeyPressHandler}
         onBlur={() => setError('')}
       />
-      <button className={styles.addBtn} onClick={addItem}>Add</button>
+      {/*<button className={styles.addBtn} onClick={addItem}>Add</button>*/}
+      <Button variant={'contained'} color={'primary'} className={styles.addBtn} onClick={addItem}>Add</Button>
       <div className={styles.errorWrapper}>
         {error && <div className={styles.errorMessage}>{error}</div>}
       </div>
