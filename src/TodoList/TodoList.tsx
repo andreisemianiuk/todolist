@@ -1,9 +1,10 @@
 import React from 'react'
 import { FilterType, TaskType } from '../App'
 import TodoListTask from '../TodoListTask/TodoListTask'
-import styles from './TodoList.module.css'
 import { AddItemForm } from '../AddItemForm/AddItemForm'
 import { EditableSpan } from '../EditableSpan/EditableSpan'
+import { Box, Button, Grid, IconButton } from '@material-ui/core'
+import { Delete } from '@material-ui/icons'
 
 type TodoListPropsType = {
   id: string
@@ -37,41 +38,58 @@ function TodoList(props: TodoListPropsType) {
   const showCompletedTasks = () => props.changeFilter('completed', props.id)
   
   return (
-    <div className={styles.container}>
-      <h3 className={styles.title}>
+    <Box style={{textAlign: 'center'}}>
+      <h3 style={{
+        maxWidth: '300px',
+        textAlign: 'center'
+      }}>
         <EditableSpan title={props.title} editTitle={editTodolistTitle}/>
-        <span className={styles.btnWrapper}>
-          <button className={styles.titleBtn} onClick={deleteTodolist} />
-        </span>
+        <IconButton onClick={deleteTodolist}>
+          <Delete/>
+        </IconButton>
       </h3>
-      <div className={styles.formContainer}>
+      <Grid>
+        <Button
+          variant={props.filter === 'all' ? 'contained' : 'outlined'}
+          color={'primary'}
+          style={{margin: '5px'}}
+          onClick={showAllTasks}>all
+        </Button>
+        <Button
+          variant={props.filter === 'active' ? 'contained' : 'outlined'}
+          color={'primary'}
+          style={{margin: '5px'}}
+          onClick={showActiveTasks}>
+          active
+        </Button>
+        <Button
+          variant={props.filter === 'completed' ? 'contained' : 'outlined'}
+          color={'primary'}
+          style={{margin: '5px'}}
+          onClick={showCompletedTasks}>completed
+        </Button>
+      </Grid>
+      <Box style={{
+        display: 'flex',
+        justifyContent: 'center',
+      }}>
         <AddItemForm title={'Create new task'} addItem={addTask}/>
-      </div>
-      
-      <div className={styles.filter}>
-        <button className={props.filter !== 'all' ? styles.selected : styles.btn} onClick={showAllTasks}>all
-        </button>
-        <button className={props.filter !== 'active' ? styles.selected : styles.btn}
-                onClick={showActiveTasks}>active
-        </button>
-        <button className={props.filter !== 'completed' ? styles.selected : styles.btn}
-                onClick={showCompletedTasks}>completed
-        </button>
-      </div>
-      <div>
+      </Box>
+      <Box>
         {props.tasks.map(v =>
-          <TodoListTask key={v.id}
-                        id={v.id}
-                        todolistId={props.id}
-                        title={v.title}
-                        isDone={v.isDone}
-                        removeTask={props.removeTask}
-                        changeChecked={props.changeChecked}
-                        changeTaskTitle={props.changeTaskTitle}
+          <TodoListTask
+            key={v.id}
+            id={v.id}
+            todolistId={props.id}
+            title={v.title}
+            isDone={v.isDone}
+            removeTask={props.removeTask}
+            changeChecked={props.changeChecked}
+            changeTaskTitle={props.changeTaskTitle}
           />)
         }
-      </div>
-    </div>
+      </Box>
+    </Box>
   )
 }
 

@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useState } from 'react'
-import s from './EditableSpan.module.css'
+import React, { ChangeEvent, FocusEvent, useState } from 'react'
+import { Box, TextField } from '@material-ui/core'
 
 type EditableSpanType = {
   title: string
@@ -18,19 +18,29 @@ export const EditableSpan = ({title, editTitle, isDone}: EditableSpanType) => {
     setEditMode(true)
   }
   
-  const editItemTitle = (e: ChangeEvent<HTMLInputElement>) => {
+  const editItemTitle = (e: FocusEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value)
     editTitle(value)
     setEditMode(false)
   }
   
-  const taskCompleted = isDone ? s.selected : ''
-  
   return (
     <>
       {editMode ?
-        <input className={s.input} autoFocus value={value} onChange={onChangeHandler} onBlur={editItemTitle}/>
-        : <span onDoubleClick={editModeHandler} className={`${s.text} ${taskCompleted}`}>{title}</span>}
+        <TextField autoFocus value={value} onChange={onChangeHandler} onBlur={editItemTitle}/>
+        : <Box
+          component={'span'}
+          m={1}
+          p={1}
+          style={{
+            textDecoration: `${isDone ? 'line-through' : ''}`,
+            wordBreak: 'break-word'
+          }}
+          onDoubleClick={editModeHandler}
+        >
+          {title}
+        </Box>
+      }
     </>
   )
 }

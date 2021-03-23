@@ -1,6 +1,7 @@
 import React, { ChangeEvent } from 'react'
-import styles from './TodoListTask.module.css'
 import { EditableSpan } from '../EditableSpan/EditableSpan'
+import { Delete } from '@material-ui/icons'
+import { Checkbox, Grid, IconButton } from '@material-ui/core'
 
 type TodoListTaskPropsType = {
   todolistId: string
@@ -10,7 +11,7 @@ type TodoListTaskPropsType = {
   isDone: boolean
   removeTask: (id: string, todolistId: string) => void
   changeChecked: (id: string, isDone: boolean, todolistId: string) => void
-  changeTaskTitle: (todolistId: string,taskId: string, newTitle: string) => void
+  changeTaskTitle: (todolistId: string, taskId: string, newTitle: string) => void
 }
 
 function TodoListTask(props: TodoListTaskPropsType) {
@@ -23,20 +24,26 @@ function TodoListTask(props: TodoListTaskPropsType) {
     props.removeTask(props.id, props.todolistId)
   }
   
-  const editTitle = (newTitle:string) => {
-    props.changeTaskTitle(props.todolistId,props.id,newTitle)
+  const editTitle = (newTitle: string) => {
+    props.changeTaskTitle(props.todolistId, props.id, newTitle)
   }
   
   return (
-    <div key={props.key}>
-			<span className={styles.item}>
-				<label className={styles.label}>
-          <input className={styles.checkbox} type="checkbox" onChange={onCheckedHandler} checked={props.isDone}/>
-        </label>
-        <EditableSpan title={props.title} editTitle={editTitle} isDone={props.isDone} />
-        <div className={styles.btnContainer}><button className={styles.span} onClick={removeTask}/></div>
-			</span>
-    </div>
+    <Grid
+      key={props.key}
+      style={{
+        minWidth: '200px',
+        maxWidth: '300px',
+        display: 'flex',
+        justifyContent: 'space-between',
+      }}
+    >
+      <Checkbox color={'primary'} onChange={onCheckedHandler} checked={props.isDone}/>
+      <EditableSpan title={props.title} editTitle={editTitle} isDone={props.isDone}/>
+      <IconButton onClick={removeTask}>
+        <Delete/>
+      </IconButton>
+    </Grid>
   )
 }
 
