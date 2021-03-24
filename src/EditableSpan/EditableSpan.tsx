@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FocusEvent, useState } from 'react'
+import React, { ChangeEvent, FocusEvent, KeyboardEvent, useState } from 'react'
 import { Box, TextField } from '@material-ui/core'
 
 type EditableSpanType = {
@@ -24,17 +24,30 @@ export const EditableSpan = ({title, editTitle, isDone}: EditableSpanType) => {
     setEditMode(false)
   }
   
+  const onEnterEditItemTitle = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      editTitle(value)
+      setEditMode(false)
+    }
+  }
+  
   return (
     <>
       {editMode ?
-        <TextField autoFocus value={value} onChange={onChangeHandler} onBlur={editItemTitle}/>
+        <TextField
+          autoFocus
+          value={value}
+          onChange={onChangeHandler}
+          onBlur={editItemTitle}
+          onKeyPress={onEnterEditItemTitle}
+        />
         : <Box
           component={'span'}
           m={1}
           p={1}
           style={{
             textDecoration: `${isDone ? 'line-through' : ''}`,
-            wordBreak: 'break-word'
+            wordBreak: 'break-word',
           }}
           onDoubleClick={editModeHandler}
         >

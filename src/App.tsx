@@ -25,7 +25,7 @@ export type TasksListType = {
   [key: string]: TaskType[]
 }
 export type FilterType = 'all' | 'active' | 'completed'
-export type TodolistsType = {
+export type TodolistType = {
   id: string
   title: string
   filter: FilterType
@@ -47,7 +47,7 @@ const useStyles = makeStyles((theme: Theme) =>
 
 export default function App() {
   const classes = useStyles()
-  let [todolists, setTodolists] = useState<TodolistsType[]>([])
+  let [todolist, setTodolist] = useState<TodolistType[]>([])
   let [tasks, setTasks] = useState<TasksListType>({})
   
   const addTask = (title: string, todolistId: string) => {
@@ -61,12 +61,12 @@ export default function App() {
   }
   const addTodolist = (title: string) => {
     const TodoListId = v1()
-    const todolist: TodolistsType = {
+    const newTodolist: TodolistType = {
       id: TodoListId,
       title: title,
       filter: 'all',
     }
-    setTodolists([todolist, ...todolists])
+    setTodolist([newTodolist, ...todolist])
     tasks[TodoListId] = []
     setTasks({...tasks})
   }
@@ -82,24 +82,24 @@ export default function App() {
     }
   }
   const changeFilter = (value: FilterType, todolistId: string) => {
-    let todolist = todolists.find(v => v.id === todolistId)
-    if (todolist) {
-      todolist.filter = value
+    let filterTodolist = todolist.find(v => v.id === todolistId)
+    if (filterTodolist) {
+      filterTodolist.filter = value
     }
-    setTodolists([...todolists])
+    setTodolist([...todolist])
   }
   const deleteTodolist = (todolistId: string) => {
-    todolists = todolists.filter(tl => tl.id !== todolistId)
-    setTodolists(todolists)
+    todolist = todolist.filter(tl => tl.id !== todolistId)
+    setTodolist(todolist)
     delete tasks[todolistId]
     setTasks({...tasks})
   }
   const changeTodolistTitle = (todolistId: string, newTitle: string) => {
-    const targetTodolist = todolists.find(t => t.id === todolistId)
+    const targetTodolist = todolist.find(t => t.id === todolistId)
     if (targetTodolist) {
       targetTodolist.title = newTitle
     }
-    setTodolists([...todolists])
+    setTodolist([...todolist])
   }
   const changeTaskTitle = (todolistId: string, taskId: string, newTitle: string) => {
     const targetTask = tasks[todolistId].find(t => t.id === taskId)
@@ -127,7 +127,7 @@ export default function App() {
           <AddItemForm title={'Create new todolist'} addItem={addTodolist}/>
         </Grid>
         <Grid container spacing={3}>
-          {todolists.map(tl => {
+          {todolist.map(tl => {
               let allTodolistTasks = tasks[tl.id]
               let tasksForTodoList = allTodolistTasks
               
