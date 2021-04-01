@@ -8,6 +8,7 @@ export type RemoveTodolistActionType = {
 export type AddTodolistActionType = {
   type: 'ADD-TODOLIST'
   title: string
+  id: string
 }
 export type ChangeTodolistTitleActionType = {
   type: 'CHANGE-TODOLIST-TITLE'
@@ -36,7 +37,7 @@ export const todolistReducer = (state: TodolistType[], action: ActionsType) => {
       return [
         ...state,
         {
-          id: v1(),
+          id: action.id,
           title: action.title,
           filter: 'all',
         },
@@ -81,6 +82,7 @@ export const addTodolistAC = (title: string): AddTodolistActionType => {
   return {
     type: 'ADD-TODOLIST',
     title,
+    id: v1(),
   }
 }
 export const changeTodolistTitleAC = (id: string,title: string): ChangeTodolistTitleActionType => {
