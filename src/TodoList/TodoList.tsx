@@ -14,7 +14,7 @@ type TodoListPropsType = {
   addTask: (title: string, todolistId: string) => void
   removeTask: (taskId: string, todolistId: string) => void
   changeChecked: (id: string, isDone: boolean, todolistId: string) => void
-  changeFilter: (value: FilterType, todolistId: string) => void
+  changeFilter: (todolistId: string, value: FilterType) => void
   deleteTodolist: (todolistId: string) => void
   changeTodolistTitle: (todolistId: string, newTitle: string) => void
   changeTaskTitle: (todolistId: string, taskId: string, newTitle: string) => void
@@ -33,15 +33,15 @@ function TodoList(props: TodoListPropsType) {
     props.changeTodolistTitle(props.id, newTitle)
   }
   
-  const showAllTasks = () => props.changeFilter('all', props.id)
-  const showActiveTasks = () => props.changeFilter('active', props.id)
-  const showCompletedTasks = () => props.changeFilter('completed', props.id)
+  const showAllTasks = () => props.changeFilter(props.id,'all' )
+  const showActiveTasks = () => props.changeFilter(props.id,'active')
+  const showCompletedTasks = () => props.changeFilter(props.id,'completed')
   
   return (
     <Box style={{textAlign: 'center'}}>
       <h3 style={{
         maxWidth: '300px',
-        textAlign: 'center'
+        textAlign: 'center',
       }}>
         <EditableSpan title={props.title} editTitle={editTodolistTitle}/>
         <IconButton onClick={deleteTodolist}>
