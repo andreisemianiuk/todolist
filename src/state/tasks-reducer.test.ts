@@ -5,7 +5,7 @@ import {
   changeTaskStatusAC,
   changeTaskTitleAC,
 } from './tasks-reducer'
-import { TasksListType, TodolistType } from '../App'
+import { TasksListType, TodolistType } from '../AppWithRedux'
 import { addTodolistAC, todolistReducer, removeTodolistAC } from './todolist-reducer'
 import { v1 } from 'uuid'
 
@@ -73,7 +73,7 @@ test('status of specified task should be changed', () => {
 })
 
 test('title of specified task should be changed', () => {
-  const action = changeTaskTitleAC('1', 'fish', todolistId2)
+  const action = changeTaskTitleAC(todolistId2,'1', 'fish')
   
   const endState = tasksReducer(startState, action)
   

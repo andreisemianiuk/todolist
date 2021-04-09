@@ -4,28 +4,25 @@ import { Delete } from '@material-ui/icons'
 import { Checkbox, Grid, IconButton } from '@material-ui/core'
 
 type TodoListTaskPropsType = {
-  todolistId: string
   title: string
   key: string
   id: string
   isDone: boolean
-  removeTask: (id: string, todolistId: string) => void
-  changeChecked: (id: string, isDone: boolean, todolistId: string) => void
-  changeTaskTitle: (todolistId: string, taskId: string, newTitle: string) => void
+  removeTask: (taskId: string) => void
+  changeTaskStatus: (taskId: string, isDone: boolean) => void
+  changeTaskTitle: (taskId: string, newTitle: string) => void
 }
 
 function TodoListTask(props: TodoListTaskPropsType) {
   
   const onCheckedHandler = (e: ChangeEvent<HTMLInputElement>) => {
-    props.changeChecked(props.id, e.currentTarget.checked, props.todolistId)
+    props.changeTaskStatus(props.id, e.currentTarget.checked)
   }
-  
   const removeTask = () => {
-    props.removeTask(props.id, props.todolistId)
+    props.removeTask(props.id)
   }
-  
   const editTitle = (newTitle: string) => {
-    props.changeTaskTitle(props.todolistId, props.id, newTitle)
+    props.changeTaskTitle(props.id, newTitle)
   }
   
   return (
