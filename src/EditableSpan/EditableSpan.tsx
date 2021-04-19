@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FocusEvent, KeyboardEvent, useState } from 'react'
+import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { Box, TextField } from '@material-ui/core'
 
 type EditableSpanType = {
@@ -6,28 +6,39 @@ type EditableSpanType = {
   editTitle: (newTitle: string) => void
   isDone?: boolean
 }
-export const EditableSpan = ({title, editTitle, isDone}: EditableSpanType) => {
+export const EditableSpan = React.memo(({title, editTitle, isDone}: EditableSpanType) => {
   const [editMode, setEditMode] = useState(false)
   const [value, setValue] = useState('')
+  const [error, setError] = useState<string | null>(null)
   
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.currentTarget.value)
+    if (error !== null) {
+      setError(null)
+    }
   }
   
   const editModeHandler = () => {
     setEditMode(true)
   }
   
-  const editItemTitle = (e: FocusEvent<HTMLInputElement>) => {
-    setValue(e.currentTarget.value)
-    editTitle(value)
-    setEditMode(false)
+  const addItemTitle = (currentValue: string) => {
+    if (currentValue.trim()) {
+      editTitle(currentValue)
+      setEditMode(false)
+    } else {
+      setError('Title is required!')
+      setValue('')
+    }
+  }
+  
+  const addItemOnBlur = () => {
+    addItemTitle(value)
   }
   
   const onEnterEditItemTitle = (e: KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
-      editTitle(value)
-      setEditMode(false)
+      addItemTitle(value)
     }
   }
   
@@ -37,8 +48,10 @@ export const EditableSpan = ({title, editTitle, isDone}: EditableSpanType) => {
         <TextField
           autoFocus
           value={value}
+          error={!!error}
+          helperText={error}
           onChange={onChangeHandler}
-          onBlur={editItemTitle}
+          onBlur={addItemOnBlur}
           onKeyPress={onEnterEditItemTitle}
         />
         : <Box
@@ -56,6 +69,6 @@ export const EditableSpan = ({title, editTitle, isDone}: EditableSpanType) => {
       }
     </>
   )
-}
+})
 
 

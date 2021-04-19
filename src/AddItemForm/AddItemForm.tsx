@@ -8,7 +8,8 @@ type AddItemFormType = {
   title?: string
 }
 
-export const AddItemForm = (props: AddItemFormType) => {
+export const AddItemForm = React.memo((props: AddItemFormType) => {
+  console.log('AddItemForm')
   const [title, setTitle] = useState<string>('')
   const [error, setError] = useState<string | null>(null)
   
@@ -24,7 +25,9 @@ export const AddItemForm = (props: AddItemFormType) => {
   
   const onChangeHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.currentTarget.value)
-    setError(null)
+    if (error !== null) {
+      setError(null)
+    }
   }
   
   const onKeyPressHandler = (e: KeyboardEvent<HTMLInputElement>) => {
@@ -52,4 +55,4 @@ export const AddItemForm = (props: AddItemFormType) => {
       </Grid>
     </Grid>
   )
-}
+})

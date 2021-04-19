@@ -1,6 +1,5 @@
-import React from 'react'
+import React, { useCallback } from 'react'
 import './App.css'
-import TodoList from './TodoList/TodoList'
 import { AddItemForm } from './AddItemForm/AddItemForm'
 import {
   AppBar,
@@ -21,6 +20,7 @@ import {
 } from './state/todolist-reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootStateType } from './state/store'
+import { TodoList } from './TodoList/TodoList'
 
 export type TaskType = {
   title: string
@@ -55,22 +55,21 @@ export default function AppWithRedux() {
   const classes = useStyles()
   
   const todolists = useSelector<RootStateType, TodolistType[]>(state => state.todolists)
-  
   const dispatch = useDispatch()
   
   // functions for todolist
-  const addTodolist = (title: string) => {
+  const addTodolist = useCallback((title: string) => {
     const action = addTodolistAC(title)
     dispatch(action)
-  }
-  const deleteTodolist = (todolistId: string) => {
+  }, [dispatch])
+  const deleteTodolist = useCallback((todolistId: string) => {
     const action = removeTodolistAC(todolistId)
     dispatch(action)
-  }
-  const changeTodolistTitle = (todolistId: string, newTitle: string) => {
+  },[dispatch])
+  const changeTodolistTitle = useCallback((todolistId: string, newTitle: string) => {
     const action = changeTodolistTitleAC(todolistId, newTitle)
     dispatch(action)
-  }
+  },[dispatch])
   
   return (
     <div className='App'>
