@@ -33,15 +33,3 @@ TaskIsNotDone.args = {
   ...baseArgs,
   id: '1', isDone: false, title: 'JS',
 }
-//
-// export const TaskRemoved = Template.bind({})
-// TaskRemoved.args = {
-//   ...baseArgs,
-//   task: {id: '1', isDone: true, title: 'JS'},
-// }
-//
-// export const TaskTitleChanged = Template.bind({})
-// TaskTitleChanged.args = {
-//   ...baseArgs,
-//   task: {id: '1', isDone: true, title: 'TS'},
-// }
