@@ -1,7 +1,7 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { Box, TextField } from '@material-ui/core'
 
-type EditableSpanType = {
+export type EditableSpanType = {
   title: string
   editTitle: (newTitle: string) => void
   isDone?: boolean
