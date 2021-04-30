@@ -12,7 +12,7 @@ import { EditableSpan } from '../EditableSpan/EditableSpan'
 import { Task } from '../Task/Task'
 
 
-type TodoListPropsType = {
+export type TodoListPropsType = {
   id: string
   title: string
   filter: string
