@@ -1,11 +1,12 @@
 import {
   addTodolistAC,
   changeTodolistFilterAC,
-  changeTodolistTitleAC, FilterType, removeTodolistAC,
+  changeTodolistTitleAC, FilterType, removeTodolistAC, setTodolistsAC,
   todolistReducer,
   TodolistType,
 } from './todolist-reducer'
 import { v1 } from 'uuid'
+import { TodoType } from '../api/todolist-api'
 
 let todolistId1: string
 let todolistId2: string
@@ -52,4 +53,12 @@ test('correct filter of todolist should be changed', () => {
   
   expect(endState[0].filter).toBe('all')
   expect(endState[1].filter).toBe(newFilter)
+})
+
+test('todolists should be set from the server', () => {
+  const endState = todolistReducer([], setTodolistsAC(startState))
+  
+  expect(endState.length).toBe(2)
+  expect(endState[0].id).toBe(todolistId1)
+  expect(endState[1].id).toBe(todolistId2)
 })
