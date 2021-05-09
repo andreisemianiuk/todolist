@@ -48,7 +48,6 @@ export const todolistReducer = (state = initialState, action: ActionsType): Todo
       }))
     case 'ADD_TODOLIST':
       return [
-        ...state,
         {
           id: action.id,
           title: action.title,
@@ -56,6 +55,7 @@ export const todolistReducer = (state = initialState, action: ActionsType): Todo
           order: 0,
           addedDate: '',
         },
+        ...state,
       ]
     case 'REMOVE_TODOLIST':
       let copy = [...state]
@@ -126,9 +126,24 @@ export const setTodolistsAC = (todolists: TodoType[]): SetTodolistsActionType =>
   }
 }
 
-
 export const fetchTodolistTC = () => (dispatch: Dispatch) => {
   todolistAPI.getTodolist().then(data => {
     dispatch(setTodolistsAC(data.data))
+  })
+}
+
+export const deleteTodolistTC = (todolistId: string) => (dispatch: Dispatch) => {
+  todolistAPI.deleteTodolist(todolistId).then(res => {
+    if (res.data.resultCode === 0) {
+      dispatch(removeTodolistAC(todolistId))
+    }
+  })
+}
+
+export const postTodolistTC = (title: string) => (dispatch: Dispatch) => {
+  todolistAPI.createTodolist(title).then(res => {
+    if (res.data.resultCode === 0) {
+      dispatch(addTodolistAC(title))
+    }
   })
 }

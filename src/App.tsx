@@ -15,13 +15,12 @@ import {
 import MenuIcon from '@material-ui/icons/Menu'
 import {
   addTodolistAC,
-  changeTodolistTitleAC, fetchTodolistTC,
+  changeTodolistTitleAC, fetchTodolistTC, postTodolistTC,
   removeTodolistAC, TodolistType,
 } from './state/todolist-reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootStateType } from './state/store'
 import { TodoList } from './TodoList/TodoList'
-import { fetchTasksTC } from './state/tasks-reducer'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -45,12 +44,11 @@ export default function App() {
   
   useEffect(() => {
     dispatch(fetchTodolistTC())
-  }, [])
+  }, [dispatch])
   
   // functions for todolist
   const addTodolist = useCallback((title: string) => {
-    const action = addTodolistAC(title)
-    dispatch(action)
+    dispatch(postTodolistTC(title))
   }, [dispatch])
   const deleteTodolist = useCallback((todolistId: string) => {
     const action = removeTodolistAC(todolistId)

@@ -3,7 +3,7 @@ import { Box, Button, Grid, IconButton } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootStateType } from '../state/store'
-import { changeTodolistFilterAC, fetchTodolistTC, FilterType } from '../state/todolist-reducer'
+import { changeTodolistFilterAC, deleteTodolistTC, FilterType } from '../state/todolist-reducer'
 import {
   addTaskAC,
   changeTaskStatusAC,
@@ -33,7 +33,7 @@ export const TodoList = React.memo((props: TodoListPropsType) => {
   
   useEffect(() => {
     dispatch(fetchTasksTC(id))
-  }, [])
+  }, [dispatch, id])
   
   
   // functions for tasks
@@ -60,6 +60,7 @@ export const TodoList = React.memo((props: TodoListPropsType) => {
   
   const deleteTodolistHandler = () => {
     deleteTodolist(id)
+    dispatch(deleteTodolistTC(id))
   }
   const editTodolistTitle = useCallback((newTitle: string) => {
     changeTodolistTitle(id, newTitle)
