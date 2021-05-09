@@ -1,4 +1,3 @@
-import { v1 } from 'uuid'
 import { AddTodolistActionType, RemoveTodolistActionType, SetTodolistsActionType } from './todolist-reducer'
 import { TaskPriorities, TaskStatuses, TaskType, todolistAPI } from '../api/todolist-api'
 import { Dispatch } from 'redux'
