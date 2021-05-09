@@ -1,12 +1,13 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { Box, TextField } from '@material-ui/core'
+import { TaskStatuses } from '../api/todolist-api'
 
 export type EditableSpanType = {
   title: string
   editTitle: (newTitle: string) => void
-  isDone?: boolean
+  status?: TaskStatuses
 }
-export const EditableSpan = React.memo(({title, editTitle, isDone}: EditableSpanType) => {
+export const EditableSpan = React.memo(({title, editTitle, status}: EditableSpanType) => {
   const [editMode, setEditMode] = useState(false)
   const [value, setValue] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -59,7 +60,7 @@ export const EditableSpan = React.memo(({title, editTitle, isDone}: EditableSpan
           m={1}
           p={1}
           style={{
-            textDecoration: `${isDone ? 'line-through' : ''}`,
+            textDecoration: `${status === TaskStatuses.Completed ? 'line-through' : ''}`,
             wordBreak: 'break-word',
           }}
           onDoubleClick={editModeHandler}

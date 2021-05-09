@@ -1,4 +1,4 @@
-import React, { useCallback } from 'react'
+import React, { useCallback, useEffect } from 'react'
 import './App.css'
 import { AddItemForm } from './AddItemForm/AddItemForm'
 import {
@@ -16,26 +16,11 @@ import MenuIcon from '@material-ui/icons/Menu'
 import {
   addTodolistAC,
   changeTodolistTitleAC,
-  removeTodolistAC,
+  removeTodolistAC, setTodolistsAC, TodolistType,
 } from './state/todolist-reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootStateType } from './state/store'
 import { TodoList } from './TodoList/TodoList'
-
-export type TaskType = {
-  title: string
-  id: string
-  isDone: boolean
-}
-export type TasksListType = {
-  [key: string]: TaskType[]
-}
-export type FilterType = 'all' | 'active' | 'completed'
-export type TodolistType = {
-  id: string
-  title: string
-  filter: FilterType
-}
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -51,11 +36,17 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
-export default function AppWithRedux() {
+export default function App() {
   const classes = useStyles()
   
   const todolists = useSelector<RootStateType, TodolistType[]>(state => state.todolists)
   const dispatch = useDispatch()
+  
+  // useEffect(() => {
+  //   todolistAPI.getTodolist().then(data => {
+  //     dispatch(setTodolistsAC(data))
+  //   })
+  // })
   
   // functions for todolist
   const addTodolist = useCallback((title: string) => {
@@ -65,23 +56,23 @@ export default function AppWithRedux() {
   const deleteTodolist = useCallback((todolistId: string) => {
     const action = removeTodolistAC(todolistId)
     dispatch(action)
-  },[dispatch])
+  }, [dispatch])
   const changeTodolistTitle = useCallback((todolistId: string, newTitle: string) => {
     const action = changeTodolistTitleAC(todolistId, newTitle)
     dispatch(action)
-  },[dispatch])
+  }, [dispatch])
   
   return (
-    <div className='App'>
-      <AppBar position='static'>
+    <div className="App">
+      <AppBar position="static">
         <Toolbar>
-          <IconButton edge='start' className={classes.menuButton} color='inherit' aria-label='menu'>
+          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
             <MenuIcon/>
           </IconButton>
-          <Typography variant='h6' className={classes.title}>
+          <Typography variant="h6" className={classes.title}>
             News
           </Typography>
-          <Button color='inherit'>Login</Button>
+          <Button color="inherit">Login</Button>
         </Toolbar>
       </AppBar>
       <Container fixed>

@@ -14,22 +14,34 @@ type CommonResponseType<T> = {
   data: T,
   fieldsErrors: string[]
 }
-
-type TodoType = {
+export type TodoType = {
   id: string
   addedDate: string
   order: number
   title: string
 }
-type TaskType = {
-  description: string
+export enum TaskStatuses {
+  New,
+  InProgress,
+  Completed,
+  Draft
+}
+export enum TaskPriorities {
+  Low,
+  Middle,
+  High,
+  Urgently,
+  Later
+}
+export type TaskType = {
+  id: string
   title: string
+  status: TaskStatuses
+  priority: TaskPriorities
+  description: string
   completed: boolean
-  status: number
-  priority: number
   startDate: string
   deadline: string
-  id: string
   todoListId: string
   order: number
   addedDate: string
