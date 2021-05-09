@@ -58,7 +58,7 @@ export const tasksReducer = (state = initialState, action: ActionsType): TasksLi
         ...state,
         [action.todolistId]:
           [{
-            id: v1(),
+            id: action.todolistId,
             title: action.title,
             status: TaskStatuses.New,
             addedDate: '',
@@ -156,5 +156,11 @@ export const setTasksAC = (tasks: TaskType[], todolistId: string): SetTasksActio
 export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch) => {
   todolistAPI.getTasks(todolistId).then(res => {
     dispatch(setTasksAC(res.data.items, todolistId))
+  })
+}
+
+export const addTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch) => {
+  todolistAPI.createTask(todolistId,title).then(res => {
+    dispatch(addTaskAC(title, todolistId))
   })
 }

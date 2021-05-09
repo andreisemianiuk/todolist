@@ -16,7 +16,7 @@ import MenuIcon from '@material-ui/icons/Menu'
 import {
   addTodolistAC,
   changeTodolistTitleAC, fetchTodolistTC, postTodolistTC,
-  removeTodolistAC, TodolistType,
+  removeTodolistAC, TodolistType, updateTodolistTC,
 } from './state/todolist-reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootStateType } from './state/store'
@@ -55,8 +55,7 @@ export default function App() {
     dispatch(action)
   }, [dispatch])
   const changeTodolistTitle = useCallback((todolistId: string, newTitle: string) => {
-    const action = changeTodolistTitleAC(todolistId, newTitle)
-    dispatch(action)
+    dispatch(updateTodolistTC(todolistId, newTitle))
   }, [dispatch])
   
   return (
