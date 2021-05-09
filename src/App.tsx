@@ -21,6 +21,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux'
 import { RootStateType } from './state/store'
 import { TodoList } from './TodoList/TodoList'
+import { todolistAPI } from './api/todolist-api'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -42,11 +43,11 @@ export default function App() {
   const todolists = useSelector<RootStateType, TodolistType[]>(state => state.todolists)
   const dispatch = useDispatch()
   
-  // useEffect(() => {
-  //   todolistAPI.getTodolist().then(data => {
-  //     dispatch(setTodolistsAC(data))
-  //   })
-  // })
+  useEffect(() => {
+    todolistAPI.getTodolist().then(data => {
+      dispatch(setTodolistsAC(data.data))
+    })
+  }, [])
   
   // functions for todolist
   const addTodolist = useCallback((title: string) => {
