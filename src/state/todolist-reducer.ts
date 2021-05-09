@@ -1,16 +1,13 @@
 import { v1 } from 'uuid'
 import { TodoType } from '../api/todolist-api'
 
-
 export type TodolistType = TodoType & {
   filter: FilterType
 }
-
 export type FilterType = 'all' | 'active' | 'completed'
-
 export type SetTodolistsActionType = {
   type: 'SET-TODOLISTS',
-  todolists: TodolistType[]
+  todolists: TodoType[]
 }
 export type RemoveTodolistActionType = {
   type: 'REMOVE-TODOLIST'
@@ -44,7 +41,10 @@ const initialState: TodolistType[] = []
 export const todolistReducer = (state = initialState, action: ActionsType): TodolistType[] => {
   switch (action.type) {
     case 'SET-TODOLISTS':
-      return [...action.todolists]
+      return action.todolists.map(todo => ({
+        ...todo,
+        filter: 'all',
+      }))
     case 'ADD-TODOLIST':
       return [
         ...state,
@@ -53,7 +53,7 @@ export const todolistReducer = (state = initialState, action: ActionsType): Todo
           title: action.title,
           filter: 'all',
           order: 0,
-          addedDate: ''
+          addedDate: '',
         },
       ]
     case 'REMOVE-TODOLIST':
@@ -118,9 +118,9 @@ export const changeTodolistFilterAC = (id: string, filter: FilterType): ChangeTo
   }
 }
 
-export const setTodolistsAC = (todolists: TodolistType[]): SetTodolistsActionType => {
+export const setTodolistsAC = (todolists: TodoType[]): SetTodolistsActionType => {
   return {
     type: 'SET-TODOLISTS',
-    todolists
+    todolists,
   }
 }
