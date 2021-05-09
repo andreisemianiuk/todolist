@@ -15,6 +15,11 @@ type CommonResponseType<T> = {
   data: T,
   fieldsErrors: string[]
 }
+type ResponseTasksType = {
+  items: TaskType[]
+  totalCount: number
+  error: string
+}
 export type TodoType = {
   id: string
   addedDate: string
@@ -66,7 +71,7 @@ export const todolistAPI = {
     return instance.delete<CommonResponseType<{}>>(`todo-lists/${todolistId}`)
   },
   getTasks(todolistId: string) {
-    return instance.get<TaskType[]>(`todo-lists/${todolistId}/tasks`)
+    return instance.get<ResponseTasksType>(`todo-lists/${todolistId}/tasks`)
   },
   createTask(todolistId: string, title: string) {
     return instance.post<CommonResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`,
