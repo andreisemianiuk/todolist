@@ -26,12 +26,14 @@ export type TodoType = {
   order: number
   title: string
 }
+
 export enum TaskStatuses {
   New,
   InProgress,
   Completed,
   Draft
 }
+
 export enum TaskPriorities {
   Low,
   Middle,
@@ -39,6 +41,7 @@ export enum TaskPriorities {
   Urgently,
   Later
 }
+
 export type TaskType = {
   id: string
   title: string
