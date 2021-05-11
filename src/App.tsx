@@ -4,19 +4,23 @@ import { AddItemForm } from './AddItemForm/AddItemForm'
 import {
   AppBar,
   Button,
+  Container,
+  createStyles,
+  Grid,
   IconButton,
   makeStyles,
+  Paper,
   Theme,
   Toolbar,
   Typography,
-  createStyles,
-  Container, Grid, Paper,
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import {
-  addTodolistAC,
-  changeTodolistTitleAC, fetchTodolistTC, postTodolistTC,
-  removeTodolistAC, TodolistType, updateTodolistTC,
+  fetchTodolistTC,
+  postTodolistTC,
+  removeTodolistAC,
+  TodolistType,
+  updateTodolistTC,
 } from './state/todolist-reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootStateType } from './state/store'

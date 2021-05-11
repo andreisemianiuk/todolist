@@ -56,6 +56,25 @@ export type TaskType = {
   addedDate: string
 }
 
+export type ModelUpdateTaskType = {
+  title: string
+  startDate: string
+  priority: TaskPriorities
+  description: string
+  deadline: string
+  status: TaskStatuses
+}
+
+export type DomainModelUpdateTaskType = {
+  title?: string
+  startDate?: string
+  priority?: TaskPriorities
+  description?: string
+  deadline?: string
+  status?: TaskStatuses
+}
+
+
 export const todolistAPI = {
   getTodolist() {
     return instance.get<TodolistType[]>('todo-lists')
@@ -80,9 +99,9 @@ export const todolistAPI = {
     return instance.post<CommonResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks`,
       {title: title})
   },
-  updateTask(todolistId: string, taskId: string, title: string) {
-    return instance.put<CommonResponseType<{}>>(`todo-lists/${todolistId}/tasks/${taskId}`,
-      {title: title})
+  updateTask(todolistId: string, taskId: string, model: ModelUpdateTaskType) {
+    return instance.put<CommonResponseType<{item: TaskType}>>(`todo-lists/${todolistId}/tasks/${taskId}`,
+      model)
   },
   deleteTask(todolistId: string, taskId: string) {
     return instance.delete<CommonResponseType<{}>>(`todo-lists/${todolistId}/tasks/${taskId}`)

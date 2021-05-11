@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { todolistAPI } from '../api/todolist-api'
+import { TaskPriorities, TaskStatuses, todolistAPI } from '../api/todolist-api'
 
 export default {
   title: 'API',
@@ -72,9 +72,10 @@ export const GetTasks = () => {
 
 export const CreateTask = () => {
   const [state, setState] = useState<any>(null)
-  const todolistId = '31e4556a-63ae-4b65-959c-108d48fc173e'
+  const todolistId = 'cb30a6da-9bd4-49f6-95d0-552a72974d9f'
+  const title = 'new title'
   useEffect(() => {
-    todolistAPI.createTask(todolistId, 'Table for work').then(res => {
+    todolistAPI.createTask(todolistId, title).then(res => {
       setState(res.data.data.item)
     })
   }, [])
@@ -85,8 +86,17 @@ export const UpdateTaskTitle = () => {
   const [state, setState] = useState<any>(null)
   const todolistId = 'cb30a6da-9bd4-49f6-95d0-552a72974d9f'
   const taskId = 'bb618e51-247d-4754-99b2-9f6b7cc2c3db'
+  let title = 'new title'
   useEffect(() => {
-    todolistAPI.updateTask(todolistId, taskId, 'updated taskTitle').then(res => {
+    todolistAPI.updateTask(todolistId, taskId, {
+      title: title,
+      startDate: 'task.startDate',
+      priority: TaskPriorities.Low,
+      description: 'task.description',
+      deadline: 'task.deadline',
+      status: TaskStatuses.New,
+      
+    }).then(res => {
       setState(res.data)
     })
   }, [])
