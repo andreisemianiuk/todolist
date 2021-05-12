@@ -1,6 +1,6 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
 import { Box, TextField } from '@material-ui/core'
-import { TaskStatuses } from '../api/todolist-api'
+import { TaskStatuses } from '../../api/todolist-api'
 
 export type EditableSpanType = {
   title: string

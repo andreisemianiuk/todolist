@@ -2,22 +2,13 @@ import React, { useCallback, useEffect } from 'react'
 import { Box, Button, Grid, IconButton } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
 import { useDispatch, useSelector } from 'react-redux'
-import { RootStateType } from '../state/store'
-import { changeTodolistFilterAC, deleteTodolistTC, FilterType } from '../state/todolist-reducer'
-import { addTaskTC, deleteTaskTC, fetchTasksTC, TasksListType, updateTaskTC } from '../state/tasks-reducer'
-import { AddItemForm } from '../AddItemForm/AddItemForm'
-import { EditableSpan } from '../EditableSpan/EditableSpan'
-import { Task } from '../Task/Task'
-import { TaskStatuses } from '../api/todolist-api'
-
-
-export type TodoListPropsType = {
-  id: string
-  title: string
-  filter: string
-  deleteTodolist: (todolistId: string) => void
-  changeTodolistTitle: (todolistId: string, newTitle: string) => void
-}
+import { RootStateType } from '../../../app/store'
+import { changeTodolistFilterAC, deleteTodolistTC } from '../../todolist-reducer'
+import { addTaskTC, deleteTaskTC, fetchTasksTC, TasksListType, updateTaskTC } from '../../tasks-reducer'
+import { AddItemForm } from '../../../components/AddItemForm/AddItemForm'
+import { EditableSpan } from '../../../components/EditableSpan/EditableSpan'
+import { Task } from './Task/Task'
+import { FilterType, TaskStatuses } from '../../../api/todolist-api'
 
 export const TodoList = React.memo((props: TodoListPropsType) => {
   const {id, filter, title, changeTodolistTitle, deleteTodolist} = props
@@ -27,7 +18,6 @@ export const TodoList = React.memo((props: TodoListPropsType) => {
   useEffect(() => {
     dispatch(fetchTasksTC(id))
   }, [dispatch, id])
-  
   
   // functions for tasks
   const removeTask = useCallback((taskId: string) => {
@@ -126,3 +116,12 @@ export const TodoList = React.memo((props: TodoListPropsType) => {
     </Box>
   )
 })
+
+// types
+export type TodoListPropsType = {
+  id: string
+  title: string
+  filter: string
+  deleteTodolist: (todolistId: string) => void
+  changeTodolistTitle: (todolistId: string, newTitle: string) => void
+}

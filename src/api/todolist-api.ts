@@ -1,5 +1,4 @@
 import axios from 'axios'
-import { TodolistType } from '../state/todolist-reducer'
 
 const instance = axios.create({
   baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -9,72 +8,7 @@ const instance = axios.create({
   },
 })
 
-type CommonResponseType<T> = {
-  resultCode: number
-  messages: Array<string>
-  data: T,
-  fieldsErrors: string[]
-}
-type ResponseTasksType = {
-  items: TaskType[]
-  totalCount: number
-  error: string
-}
-export type TodoType = {
-  id: string
-  addedDate: string
-  order: number
-  title: string
-}
-
-export enum TaskStatuses {
-  New,
-  InProgress,
-  Completed,
-  Draft
-}
-
-export enum TaskPriorities {
-  Low,
-  Middle,
-  High,
-  Urgently,
-  Later
-}
-
-export type TaskType = {
-  id: string
-  title: string
-  status: TaskStatuses
-  priority: TaskPriorities
-  description: string
-  completed: boolean
-  startDate: string
-  deadline: string
-  todoListId: string
-  order: number
-  addedDate: string
-}
-
-export type ModelUpdateTaskType = {
-  title: string
-  startDate: string
-  priority: TaskPriorities
-  description: string
-  deadline: string
-  status: TaskStatuses
-}
-
-export type DomainModelUpdateTaskType = {
-  title?: string
-  startDate?: string
-  priority?: TaskPriorities
-  description?: string
-  deadline?: string
-  status?: TaskStatuses
-}
-
-
+// api
 export const todolistAPI = {
   getTodolist() {
     return instance.get<TodolistType[]>('todo-lists')
@@ -100,10 +34,75 @@ export const todolistAPI = {
       {title: title})
   },
   updateTask(todolistId: string, taskId: string, model: ModelUpdateTaskType) {
-    return instance.put<CommonResponseType<{item: TaskType}>>(`todo-lists/${todolistId}/tasks/${taskId}`,
+    return instance.put<CommonResponseType<{ item: TaskType }>>(`todo-lists/${todolistId}/tasks/${taskId}`,
       model)
   },
   deleteTask(todolistId: string, taskId: string) {
     return instance.delete<CommonResponseType<{}>>(`todo-lists/${todolistId}/tasks/${taskId}`)
   },
 }
+
+// types
+type CommonResponseType<T> = {
+  resultCode: number
+  messages: Array<string>
+  data: T,
+  fieldsErrors: string[]
+}
+type ResponseTasksType = {
+  items: TaskType[]
+  totalCount: number
+  error: string
+}
+export type TodoType = {
+  id: string
+  addedDate: string
+  order: number
+  title: string
+}
+export enum TaskStatuses {
+  New,
+  InProgress,
+  Completed,
+  Draft
+}
+export enum TaskPriorities {
+  Low,
+  Middle,
+  High,
+  Urgently,
+  Later
+}
+export type TaskType = {
+  id: string
+  title: string
+  status: TaskStatuses
+  priority: TaskPriorities
+  description: string
+  completed: boolean
+  startDate: string
+  deadline: string
+  todoListId: string
+  order: number
+  addedDate: string
+}
+export type DomainModelUpdateTaskType = {
+  title: string
+  startDate: string
+  priority: TaskPriorities
+  description: string
+  deadline: string
+  status: TaskStatuses
+}
+export type ModelUpdateTaskType = {
+  title?: string
+  startDate?: string
+  priority?: TaskPriorities
+  description?: string
+  deadline?: string
+  status?: TaskStatuses
+}
+export type TodolistType = TodoType & {
+  filter: FilterType
+}
+export type FilterType = 'all' | 'active' | 'completed'

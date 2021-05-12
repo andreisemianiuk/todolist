@@ -1,8 +1,8 @@
 import { v1 } from 'uuid'
-import { todolistAPI, TodoType } from '../api/todolist-api'
+import { FilterType, todolistAPI, TodolistType, TodoType } from '../api/todolist-api'
 import { Dispatch } from 'redux'
 
-export type ActionsType =
+type ActionsType =
   | ReturnType<typeof setTodolistsAC>
   | ReturnType<typeof removeTodolistAC>
   | ReturnType<typeof addTodolistAC>
@@ -86,7 +86,6 @@ export const postTodolistTC = (title: string) => (dispatch: Dispatch<ActionsType
     }
   })
 }
-
 export const updateTodolistTC = (todolistId: string, title: string) => (dispatch: Dispatch<ActionsType>) => {
   todolistAPI.updateTodolist(todolistId, title).then(res => {
     if (res.data.resultCode === 0) {
@@ -94,9 +93,3 @@ export const updateTodolistTC = (todolistId: string, title: string) => (dispatch
     }
   })
 }
-
-// types
-export type TodolistType = TodoType & {
-  filter: FilterType
-}
-export type FilterType = 'all' | 'active' | 'completed'

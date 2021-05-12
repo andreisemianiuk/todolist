@@ -1,8 +1,7 @@
 import React from 'react'
 import { Meta, Story } from '@storybook/react/types-6-0'
-import { action } from '@storybook/addon-actions'
-import App from '../App'
-import { ReduxStoreProviderDecorator } from './decorators/ReduxStoreProviderDecorator'
+import App from './App'
+import { ReduxStoreProviderDecorator } from '../stories/decorators/ReduxStoreProviderDecorator'
 
 export default {
   title: 'Todolist/App',
