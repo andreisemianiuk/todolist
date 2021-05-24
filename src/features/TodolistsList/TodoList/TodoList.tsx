@@ -3,21 +3,22 @@ import { Box, Button, Grid, IconButton } from '@material-ui/core'
 import { Delete } from '@material-ui/icons'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootStateType } from '../../../app/store'
-import { changeTodolistFilterAC, deleteTodolistTC } from '../../todolist-reducer'
+import { changeTodolistFilterAC } from '../../todolist-reducer'
 import { addTaskTC, deleteTaskTC, fetchTasksTC, TasksListType, updateTaskTC } from '../../tasks-reducer'
 import { AddItemForm } from '../../../components/AddItemForm/AddItemForm'
 import { EditableSpan } from '../../../components/EditableSpan/EditableSpan'
 import { Task } from './Task/Task'
 import { FilterType, TaskStatuses } from '../../../api/todolist-api'
+import { RequestStatusType } from '../../../app/app-reducer'
 
 export const TodoList = React.memo((props: TodoListPropsType) => {
-  const {id, filter, title, changeTodolistTitle, deleteTodolist} = props
+  const {id, filter, title, entityStatus, changeTodolistTitle, deleteTodolist} = props
   const tasks = useSelector<RootStateType, TasksListType>(state => state.tasks)
   const dispatch = useDispatch()
   
   useEffect(() => {
     dispatch(fetchTasksTC(id))
-  }, [dispatch, id])
+  }, [dispatch])
   
   // functions for tasks
   const removeTask = useCallback((taskId: string) => {
@@ -41,7 +42,6 @@ export const TodoList = React.memo((props: TodoListPropsType) => {
   
   const deleteTodolistHandler = () => {
     deleteTodolist(id)
-    dispatch(deleteTodolistTC(id))
   }
   const editTodolistTitle = useCallback((newTitle: string) => {
     changeTodolistTitle(id, newTitle)
@@ -69,7 +69,7 @@ export const TodoList = React.memo((props: TodoListPropsType) => {
         textAlign: 'center',
       }}>
         <EditableSpan title={title} editTitle={editTodolistTitle}/>
-        <IconButton onClick={deleteTodolistHandler}>
+        <IconButton onClick={deleteTodolistHandler} disabled={entityStatus === 'loading'}>
           <Delete/>
         </IconButton>
       </h3>
@@ -98,7 +98,7 @@ export const TodoList = React.memo((props: TodoListPropsType) => {
         display: 'flex',
         justifyContent: 'center',
       }}>
-        <AddItemForm title={'Create new task'} addItem={addTask}/>
+        <AddItemForm title={'Create new task'} addItem={addTask} disabled={entityStatus === 'loading'}/>
       </Box>
       <Box>
         {tasksForTodoList.map(v =>
@@ -122,6 +122,7 @@ export type TodoListPropsType = {
   id: string
   title: string
   filter: string
+  entityStatus: RequestStatusType
   deleteTodolist: (todolistId: string) => void
   changeTodolistTitle: (todolistId: string, newTitle: string) => void
 }

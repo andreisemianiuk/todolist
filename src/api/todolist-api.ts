@@ -1,4 +1,5 @@
 import axios from 'axios'
+import { RequestStatusType } from '../app/app-reducer'
 
 const instance = axios.create({
   baseURL: 'https://social-network.samuraijs.com/api/1.1/',
@@ -60,12 +61,14 @@ export type TodoType = {
   order: number
   title: string
 }
+
 export enum TaskStatuses {
   New,
   InProgress,
   Completed,
   Draft
 }
+
 export enum TaskPriorities {
   Low,
   Middle,
@@ -73,6 +76,7 @@ export enum TaskPriorities {
   Urgently,
   Later
 }
+
 export type TaskType = {
   id: string
   title: string
@@ -104,5 +108,6 @@ export type ModelUpdateTaskType = {
 }
 export type TodolistType = TodoType & {
   filter: FilterType
+  entityStatus: RequestStatusType
 }
 export type FilterType = 'all' | 'active' | 'completed'
