@@ -3,19 +3,21 @@ import { EditableSpan } from '../../../../components/EditableSpan/EditableSpan'
 import { Delete } from '@material-ui/icons'
 import { Checkbox, Grid, IconButton } from '@material-ui/core'
 import { TaskStatuses } from '../../../../api/todolist-api'
+import { RequestStatusType } from '../../../../app/app-reducer'
 
 export type TaskPropsType = {
   title: string
   key: string
   id: string
   status: TaskStatuses
+  entityStatus?: RequestStatusType
   removeTask: (taskId: string) => void
   changeTaskStatus: (taskId: string, status: TaskStatuses) => void
   changeTaskTitle: (taskId: string, newTitle: string) => void
 }
 
 export const Task = React.memo((props: TaskPropsType) => {
-  const {title, id, status, removeTask, changeTaskStatus, changeTaskTitle} = props
+  const {title, id, status, entityStatus, removeTask, changeTaskStatus, changeTaskTitle} = props
   
   const onCheckedHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     changeTaskStatus(id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)
@@ -37,9 +39,20 @@ export const Task = React.memo((props: TaskPropsType) => {
         justifyContent: 'space-between',
       }}
     >
-      <Checkbox color={'primary'} onChange={onCheckedHandler} checked={status !== TaskStatuses.New}/>
-      <EditableSpan title={title} editTitle={editTitle} status={status}/>
-      <IconButton onClick={deleteTask}>
+      <Checkbox
+        color={'primary'}
+        onChange={onCheckedHandler}
+        checked={status !== TaskStatuses.New}
+        disabled={entityStatus === 'loading'}
+      />
+      <EditableSpan
+        title={title}
+        editTitle={editTitle}
+        status={status}
+        entityStatus={entityStatus}
+        disabled={entityStatus === 'loading'}
+      />
+      <IconButton onClick={deleteTask} disabled={entityStatus === 'loading'}>
         <Delete/>
       </IconButton>
     </Grid>

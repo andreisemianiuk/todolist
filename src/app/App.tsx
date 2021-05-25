@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
+
 export default function App() {
   const classes = useStyles()
   const status = useSelector<RootStateType, RequestStatusType>(state => state.app.status)

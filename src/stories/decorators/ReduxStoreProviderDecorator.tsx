@@ -1,15 +1,18 @@
 import React from 'react'
 import { Provider } from 'react-redux'
-import { combineReducers, createStore } from 'redux'
+import { applyMiddleware, combineReducers, createStore } from 'redux'
 import { v1 } from 'uuid'
 import { todolistReducer } from '../../features/todolist-reducer'
 import { tasksReducer } from '../../features/tasks-reducer'
 import { RootStateType } from '../../app/store'
 import { TaskPriorities, TaskStatuses } from '../../api/todolist-api'
+import thunk from 'redux-thunk'
+import { appReducer } from '../../app/app-reducer'
 
 const rootReducer = combineReducers({
   tasks: tasksReducer,
   todolists: todolistReducer,
+  app: appReducer
 })
 
 const initialGlobalState = {
@@ -20,24 +23,24 @@ const initialGlobalState = {
   tasks: {
     ['todolistId1']: [
       {
-        id: v1(), title: 'HTML&CSS', status: TaskStatuses.New,
+        id: v1(), title: 'HTML&CSS', status: TaskStatuses.New, entityStatus: 'idle',
         todoListId: 'todolistId1', priority: TaskPriorities.Low, description: '',
         completed: false, startDate: '', deadline: '', order: 0, addedDate: '',
       },
       {
-        id: v1(), title: 'JS', status: TaskStatuses.New,
+        id: v1(), title: 'JS', status: TaskStatuses.New, entityStatus: 'idle',
         todoListId: 'todolistId1', priority: TaskPriorities.Low, description: '',
         completed: false, startDate: '', deadline: '', order: 0, addedDate: '',
       },
     ],
     ['todolistId2']: [
       {
-        id: v1(), title: 'Milk', status: TaskStatuses.New,
+        id: v1(), title: 'Milk', status: TaskStatuses.New, entityStatus: 'idle',
         todoListId: 'todolistId2', priority: TaskPriorities.Low, description: '',
         completed: false, startDate: '', deadline: '', order: 0, addedDate: '',
       },
       {
-        id: v1(), title: 'Book', status: TaskStatuses.New,
+        id: v1(), title: 'Book', status: TaskStatuses.New, entityStatus: 'idle',
         todoListId: 'todolistId2', priority: TaskPriorities.Low, description: '',
         completed: false, startDate: '', deadline: '', order: 0, addedDate: '',
       },
@@ -45,11 +48,11 @@ const initialGlobalState = {
   },
   app: {
     status: 'idle',
-    error: 'ERROR',
+    error: null,
   },
 }
 
-export const storyBookStore = createStore(rootReducer, initialGlobalState as RootStateType)
+export const storyBookStore = createStore(rootReducer, initialGlobalState as RootStateType,applyMiddleware(thunk))
 
 export const ReduxStoreProviderDecorator = (storyFn: any) => (
   <Provider store={storyBookStore}>

@@ -16,7 +16,7 @@ export const TodoList = React.memo((props: TodoListPropsType) => {
   const tasks = useSelector<RootStateType, TasksListType>(state => state.tasks)
   const dispatch = useDispatch()
   
-  useEffect(() => {
+  useEffect(() => {debugger
     dispatch(fetchTasksTC(id))
   }, [dispatch, id])
   
@@ -68,7 +68,12 @@ export const TodoList = React.memo((props: TodoListPropsType) => {
         maxWidth: '300px',
         textAlign: 'center',
       }}>
-        <EditableSpan title={title} editTitle={editTodolistTitle}/>
+        <EditableSpan
+          title={title}
+          editTitle={editTodolistTitle}
+          disabled={entityStatus === 'loading'}
+          entityStatus={entityStatus}
+        />
         <IconButton onClick={deleteTodolistHandler} disabled={entityStatus === 'loading'}>
           <Delete/>
         </IconButton>
@@ -107,6 +112,7 @@ export const TodoList = React.memo((props: TodoListPropsType) => {
             id={v.id}
             title={v.title}
             status={v.status}
+            entityStatus={v.entityStatus}
             removeTask={removeTask}
             changeTaskStatus={changeTaskStatus}
             changeTaskTitle={changeTaskTitle}

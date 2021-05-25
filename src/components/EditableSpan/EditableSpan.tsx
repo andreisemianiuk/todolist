@@ -1,13 +1,17 @@
 import React, { ChangeEvent, KeyboardEvent, useState } from 'react'
-import { Box, TextField } from '@material-ui/core'
+import { Box, CircularProgress, TextField } from '@material-ui/core'
 import { TaskStatuses } from '../../api/todolist-api'
+import { RequestStatusType } from '../../app/app-reducer'
 
 export type EditableSpanType = {
   title: string
   editTitle: (newTitle: string) => void
   status?: TaskStatuses
+  disabled?: boolean
+  entityStatus?: RequestStatusType
 }
-export const EditableSpan = React.memo(({title, editTitle, status}: EditableSpanType) => {
+export const EditableSpan = React.memo((
+  {title, editTitle, status, disabled, entityStatus}: EditableSpanType) => {
   const [editMode, setEditMode] = useState(false)
   const [value, setValue] = useState('')
   const [error, setError] = useState<string | null>(null)
@@ -20,7 +24,7 @@ export const EditableSpan = React.memo(({title, editTitle, status}: EditableSpan
   }
   
   const editModeHandler = () => {
-    setEditMode(true)
+    !disabled && setEditMode(true)
   }
   
   const addItemTitle = (currentValue: string) => {
@@ -45,28 +49,30 @@ export const EditableSpan = React.memo(({title, editTitle, status}: EditableSpan
   
   return (
     <>
-      {editMode ?
-        <TextField
-          autoFocus
-          value={value}
-          error={!!error}
-          helperText={error}
-          onChange={onChangeHandler}
-          onBlur={addItemOnBlur}
-          onKeyPress={onEnterEditItemTitle}
-        />
-        : <Box
-          component={'span'}
-          m={1}
-          p={1}
-          style={{
-            textDecoration: `${status === TaskStatuses.Completed ? 'line-through' : ''}`,
-            wordBreak: 'break-word',
-          }}
-          onDoubleClick={editModeHandler}
-        >
-          {title}
-        </Box>
+      {entityStatus === 'loading' ? <CircularProgress size={20}/> :
+        editMode ?
+          <TextField
+            autoFocus
+            value={value}
+            error={!!error}
+            helperText={error}
+            onChange={onChangeHandler}
+            onBlur={addItemOnBlur}
+            onKeyPress={onEnterEditItemTitle}
+          />
+          : <Box
+            component={'span'}
+            m={1}
+            p={1}
+            style={{
+              textDecoration: `${status === TaskStatuses.Completed ? 'line-through' : ''}`,
+              wordBreak: 'break-word',
+            }}
+            onDoubleClick={editModeHandler}
+          >
+            {title}
+          </Box>
+        
       }
     </>
   )

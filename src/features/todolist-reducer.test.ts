@@ -2,7 +2,7 @@ import {
   addTodolistAC,
   changeTodolistFilterAC,
   changeTodolistTitleAC,
-  removeTodolistAC, setEntityStatusAC,
+  removeTodolistAC, setTodoEntityStatusAC,
   setTodolistsAC,
   todolistReducer,
 } from './todolist-reducer'
@@ -71,7 +71,7 @@ test('todolists should be set from the server', () => {
 })
 
 test('correct entity status should be added', () => {
-  const endState = todolistReducer(startState, setEntityStatusAC(todolistId1, 'loading'))
+  const endState = todolistReducer(startState, setTodoEntityStatusAC(todolistId1, 'loading'))
   
   expect(endState[0].entityStatus).toBe('loading')
   expect(endState[1].entityStatus).toBe('idle')
