@@ -44,7 +44,7 @@ export const todolistAPI = {
 }
 
 // types
-type CommonResponseType<T> = {
+export type CommonResponseType<T> = {
   resultCode: number
   messages: Array<string>
   data: T,
@@ -68,7 +68,6 @@ export enum TaskStatuses {
   Completed,
   Draft
 }
-
 export enum TaskPriorities {
   Low,
   Middle,
@@ -76,7 +75,11 @@ export enum TaskPriorities {
   Urgently,
   Later
 }
-
+// enum for server response resultcode
+export enum ResultCodeResponse {
+  Succeed,
+  Failed,
+}
 export type TaskType = {
   id: string
   title: string
