@@ -75,7 +75,7 @@ export const fetchTasksTC = (todolistId: string) => (dispatch: Dispatch<ActionsT
       dispatch(setAppErrorAC(res.data.error))
       dispatch(setAppStatusAC('failed'))
     }
-  }).catch((e) => handleServerNetworkError(e.message, dispatch))
+  }).catch((e) => handleServerNetworkError(e, dispatch))
 }
 export const addTaskTC = (todolistId: string, title: string) => (dispatch: Dispatch<ActionsType>) => {
   dispatch(setAppStatusAC('loading'))
@@ -86,7 +86,7 @@ export const addTaskTC = (todolistId: string, title: string) => (dispatch: Dispa
     } else {
       handleServerAppError(res.data, dispatch)
     }
-  }).catch((error) => handleServerNetworkError(error.message, dispatch))
+  }).catch((e) => handleServerNetworkError(e, dispatch))
 }
 export const deleteTaskTC = (todolistId: string, taskId: string) => (dispatch: Dispatch<ActionsType>) => {
   dispatch(setAppStatusAC('loading'))
@@ -97,7 +97,7 @@ export const deleteTaskTC = (todolistId: string, taskId: string) => (dispatch: D
     } else {
       handleServerAppError(res.data,dispatch)
     }
-  }).catch((error) => handleServerNetworkError(error.message, dispatch))
+  }).catch((e) => handleServerNetworkError(e, dispatch))
 }
 export const updateTaskTC = (todolistId: string, taskId: string, model: ModelUpdateTaskType) =>
   (dispatch: Dispatch<ActionsType>, getState: () => RootStateType) => {
@@ -123,7 +123,7 @@ export const updateTaskTC = (todolistId: string, taskId: string, model: ModelUpd
         } else {
           handleServerAppError(res.data, dispatch)
         }
-      }).catch((error) => handleServerNetworkError(error.message, dispatch))
+      }).catch((e) => handleServerNetworkError(e, dispatch))
     }
   }
 
