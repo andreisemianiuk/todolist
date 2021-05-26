@@ -64,10 +64,12 @@ export const setTodoEntityStatusAC = (id: string, status: RequestStatusType) => 
 // Thunk Creators
 export const fetchTodolistTC = () => (dispatch: Dispatch<ActionsType>) => {
   dispatch(setAppStatusAC('loading'))
-  todolistAPI.getTodolist().then(data => {
-    dispatch(setTodolistsAC(data.data))
+  todolistAPI.getTodolist().then(res => {
+    dispatch(setTodolistsAC(res.data))
     dispatch(setAppStatusAC('succeeded'))
-  }).catch((e) => handleServerNetworkError(e, dispatch))
+  }).catch((e) => {
+    handleServerNetworkError(e, dispatch)
+  })
 }
 export const postTodolistTC = (title: string) => (dispatch: Dispatch<ActionsType>) => {
   dispatch(setAppStatusAC('loading'))
@@ -91,7 +93,10 @@ export const deleteTodolistTC = (todolistId: string) => (dispatch: Dispatch<Acti
       handleServerAppError(res.data, dispatch)
       dispatch(setTodoEntityStatusAC(todolistId, 'failed'))
     }
-  }).catch((e) => handleServerNetworkError(e, dispatch))
+  }).catch((e) => {
+    handleServerNetworkError(e, dispatch)
+    dispatch(setTodoEntityStatusAC(todolistId, 'failed'))
+  })
 }
 export const updateTodolistTC = (todolistId: string, title: string) => (dispatch: Dispatch<ActionsType>) => {
   dispatch(setAppStatusAC('loading'))
@@ -105,7 +110,10 @@ export const updateTodolistTC = (todolistId: string, title: string) => (dispatch
       handleServerAppError(res.data, dispatch)
       dispatch(setTodoEntityStatusAC(todolistId, 'failed'))
     }
-  }).catch((e) => handleServerNetworkError(e, dispatch))
+  }).catch((e) => {
+    handleServerNetworkError(e, dispatch)
+    dispatch(setTodoEntityStatusAC(todolistId, 'failed'))
+  })
 }
 
 // types

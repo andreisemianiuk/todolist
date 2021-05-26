@@ -11,13 +11,14 @@ export type TaskPropsType = {
   id: string
   status: TaskStatuses
   entityStatus?: RequestStatusType
+  entityTaskStatus?: RequestStatusType
   removeTask: (taskId: string) => void
   changeTaskStatus: (taskId: string, status: TaskStatuses) => void
   changeTaskTitle: (taskId: string, newTitle: string) => void
 }
 
 export const Task = React.memo((props: TaskPropsType) => {
-  const {title, id, status, entityStatus, removeTask, changeTaskStatus, changeTaskTitle} = props
+  const {title, id, status, entityTaskStatus, removeTask, changeTaskStatus, changeTaskTitle} = props
   
   const onCheckedHandler = useCallback((e: ChangeEvent<HTMLInputElement>) => {
     changeTaskStatus(id, e.currentTarget.checked ? TaskStatuses.Completed : TaskStatuses.New)
@@ -43,16 +44,16 @@ export const Task = React.memo((props: TaskPropsType) => {
         color={'primary'}
         onChange={onCheckedHandler}
         checked={status !== TaskStatuses.New}
-        disabled={entityStatus === 'loading'}
+        disabled={entityTaskStatus === 'loading'}
       />
       <EditableSpan
         title={title}
         editTitle={editTitle}
         status={status}
-        entityStatus={entityStatus}
-        disabled={entityStatus === 'loading'}
+        entityStatus={entityTaskStatus}
+        disabled={entityTaskStatus === 'loading'}
       />
-      <IconButton onClick={deleteTask} disabled={entityStatus === 'loading'}>
+      <IconButton onClick={deleteTask} disabled={entityTaskStatus === 'loading'}>
         <Delete/>
       </IconButton>
     </Grid>

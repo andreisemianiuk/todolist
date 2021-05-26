@@ -12,13 +12,14 @@ import { FilterType, TaskStatuses } from '../../../api/todolist-api'
 import { RequestStatusType } from '../../../app/app-reducer'
 
 export const TodoList = React.memo((props: TodoListPropsType) => {
-  const {id, filter, title, entityStatus, changeTodolistTitle, deleteTodolist} = props
+  const {id, filter, title, entityStatus, changeTodolistTitle, deleteTodolist, demo} = props
   const tasks = useSelector<RootStateType, TasksListType>(state => state.tasks)
   const dispatch = useDispatch()
   
-  useEffect(() => {debugger
+  useEffect(() => {
+    if (demo) return
     dispatch(fetchTasksTC(id))
-  }, [dispatch, id])
+  }, [dispatch])
   
   // functions for tasks
   const removeTask = useCallback((taskId: string) => {
@@ -112,7 +113,8 @@ export const TodoList = React.memo((props: TodoListPropsType) => {
             id={v.id}
             title={v.title}
             status={v.status}
-            entityStatus={v.entityStatus}
+            // entityStatus={entityStatus}
+            entityTaskStatus={v.entityTaskStatus}
             removeTask={removeTask}
             changeTaskStatus={changeTaskStatus}
             changeTaskTitle={changeTaskTitle}
@@ -125,6 +127,7 @@ export const TodoList = React.memo((props: TodoListPropsType) => {
 
 // types
 export type TodoListPropsType = {
+  demo?: boolean
   id: string
   title: string
   filter: string

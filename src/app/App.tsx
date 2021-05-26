@@ -1,8 +1,8 @@
-import React from 'react'
+import React, { useCallback, useEffect } from 'react'
 import './App.css'
 import {
   AppBar,
-  Button,
+  Button, CircularProgress,
   Container,
   createStyles,
   IconButton,
@@ -14,10 +14,13 @@ import {
 } from '@material-ui/core'
 import MenuIcon from '@material-ui/icons/Menu'
 import { TodolistsList } from '../features/TodolistsList/TodolistsList'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { RootStateType } from './store'
-import { RequestStatusType } from './app-reducer'
+import { RequestStatusType, setAppInitializedTC } from './app-reducer'
 import { ErrorSnackbar } from '../components/ErrorSnackbar/ErrorSnackbar'
+import { Redirect, Route, Switch } from 'react-router-dom'
+import { Login } from '../features/Login/Login'
+import { logoutUserTC } from '../features/Login/login-reducer'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -33,14 +36,35 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 )
 
+type PropsType = {
+  demo?: boolean
+}
 
-export default function App() {
+export const App = ({demo = false}: PropsType) => {
   const classes = useStyles()
   const status = useSelector<RootStateType, RequestStatusType>(state => state.app.status)
+  const isInitialized = useSelector<RootStateType, boolean>(state => state.app.isInitialized)
+  const isLoggedIn = useSelector<RootStateType, boolean>(state => state.login.isLoggedIn)
+  const dispatch = useDispatch()
+  
+  useEffect(() => {
+    dispatch(setAppInitializedTC())
+  }, [dispatch])
+  
+  const logout = useCallback(() => {
+    dispatch(logoutUserTC())
+  }, [dispatch])
+  
+  if (!isInitialized) {
+    return <div
+      style={{position: 'fixed', top: '30%', textAlign: 'center', width: '100%'}}>
+      <CircularProgress/>
+    </div>
+  }
   
   return (
     <div className="App">
-      <ErrorSnackbar />
+      <ErrorSnackbar/>
       <AppBar position="static">
         <Toolbar>
           <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
@@ -49,12 +73,21 @@ export default function App() {
           <Typography variant="h6" className={classes.title}>
             News
           </Typography>
-          <Button color="inherit">Login</Button>
+          {isLoggedIn && <Button color="inherit" onClick={logout}>Logout</Button>}
         </Toolbar>
         {status === 'loading' && <LinearProgress/>}
       </AppBar>
       <Container fixed>
-        <TodolistsList/>
+        <Switch>
+          <Route exact path={'/'} render={() => <TodolistsList demo={demo}/>}/>
+          <Route exact path={'/login'} render={() => <Login/>}/>
+          <Route path={'/404'} render={() =>
+            <h1 style={{color: 'red', fontWeight: 'bold', textAlign: 'center'}}>
+              404: PAGE NOT FOUND
+            </h1>}
+          />
+          <Redirect from={'*'} to={'/404'}/>
+        </Switch>
       </Container>
     </div>
   )

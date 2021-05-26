@@ -12,9 +12,12 @@ export const handleServerAppError = <T>(data: CommonResponseType<T>, dispatch: E
   dispatch(setAppStatusAC('failed'))
 }
 
-export const handleServerNetworkError = (error: { message: string }, dispatch: ErrorUtilsDispatchType) => {
-  dispatch(setAppErrorAC(error.message))
-  dispatch(setAppStatusAC('failed'))
-}
+export const handleServerNetworkError =
+  (error: { message: string }, dispatch: ErrorUtilsDispatchType) => {
+    dispatch(setAppErrorAC(error.message))
+    dispatch(setAppStatusAC('failed'))
+  }
 
-type ErrorUtilsDispatchType = Dispatch<ReturnType<typeof setAppStatusAC> | ReturnType<typeof setAppErrorAC>>
+type ErrorUtilsDispatchType =
+  Dispatch<ReturnType<typeof setAppStatusAC>
+    | ReturnType<typeof setAppErrorAC>>

@@ -2,23 +2,25 @@ import React, { useCallback, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootStateType } from '../../app/store'
 import { TodolistType } from '../../api/todolist-api'
-import {
-  deleteTodolistTC,
-  fetchTodolistTC,
-  postTodolistTC,
-  updateTodolistTC,
-} from '../todolist-reducer'
+import { deleteTodolistTC, fetchTodolistTC, postTodolistTC, updateTodolistTC } from '../todolist-reducer'
 import { Grid, Paper } from '@material-ui/core'
 import { AddItemForm } from '../../components/AddItemForm/AddItemForm'
 import { TodoList } from './TodoList/TodoList'
+import { Redirect } from 'react-router-dom'
 
-export const TodolistsList: React.FC = () => {
+type PropsType = {
+  demo?: boolean
+}
+
+export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
   const todolists = useSelector<RootStateType, TodolistType[]>(state => state.todolists)
+  const isLoggedIn = useSelector<RootStateType, boolean>(state => state.login.isLoggedIn)
   const dispatch = useDispatch()
   
   useEffect(() => {
+    if (demo || !isLoggedIn) return
     dispatch(fetchTodolistTC())
-  }, [dispatch])
+  }, [dispatch, isLoggedIn])
   
   // functions for todolist
   const addTodolist = useCallback((title: string) => {
@@ -30,6 +32,8 @@ export const TodolistsList: React.FC = () => {
   const changeTodolistTitle = useCallback((todolistId: string, newTitle: string) => {
     dispatch(updateTodolistTC(todolistId, newTitle))
   }, [dispatch])
+  
+  if (!isLoggedIn) return <Redirect to={'login'}/>
   
   return (
     <>
@@ -44,6 +48,7 @@ export const TodolistsList: React.FC = () => {
                 minWidth: '300px',
               }}>
                 <TodoList
+                  demo={demo}
                   key={tl.id}
                   id={tl.id}
                   title={tl.title}

@@ -8,11 +8,13 @@ import { RootStateType } from '../../app/store'
 import { TaskPriorities, TaskStatuses } from '../../api/todolist-api'
 import thunk from 'redux-thunk'
 import { appReducer } from '../../app/app-reducer'
+import { loginReducer } from '../../features/Login/login-reducer'
 
 const rootReducer = combineReducers({
   tasks: tasksReducer,
   todolists: todolistReducer,
-  app: appReducer
+  app: appReducer,
+  login: loginReducer,
 })
 
 const initialGlobalState = {
@@ -23,36 +25,40 @@ const initialGlobalState = {
   tasks: {
     ['todolistId1']: [
       {
-        id: v1(), title: 'HTML&CSS', status: TaskStatuses.New, entityStatus: 'idle',
+        id: v1(), title: 'HTML&CSS', status: TaskStatuses.New, entityTaskStatus: 'idle',
         todoListId: 'todolistId1', priority: TaskPriorities.Low, description: '',
         completed: false, startDate: '', deadline: '', order: 0, addedDate: '',
       },
       {
-        id: v1(), title: 'JS', status: TaskStatuses.New, entityStatus: 'idle',
+        id: v1(), title: 'JS', status: TaskStatuses.New, entityTaskStatus: 'idle',
         todoListId: 'todolistId1', priority: TaskPriorities.Low, description: '',
         completed: false, startDate: '', deadline: '', order: 0, addedDate: '',
       },
     ],
     ['todolistId2']: [
       {
-        id: v1(), title: 'Milk', status: TaskStatuses.New, entityStatus: 'idle',
+        id: v1(), title: 'Milk', status: TaskStatuses.New, entityTaskStatus: 'idle',
         todoListId: 'todolistId2', priority: TaskPriorities.Low, description: '',
         completed: false, startDate: '', deadline: '', order: 0, addedDate: '',
       },
       {
-        id: v1(), title: 'Book', status: TaskStatuses.New, entityStatus: 'idle',
+        id: v1(), title: 'Book', status: TaskStatuses.New, entityTaskStatus: 'idle',
         todoListId: 'todolistId2', priority: TaskPriorities.Low, description: '',
         completed: false, startDate: '', deadline: '', order: 0, addedDate: '',
       },
     ],
   },
   app: {
+    isInitialized: false,
     status: 'idle',
     error: null,
   },
+  login: {
+    isLoggedIn: false,
+  },
 }
 
-export const storyBookStore = createStore(rootReducer, initialGlobalState as RootStateType,applyMiddleware(thunk))
+export const storyBookStore = createStore(rootReducer, initialGlobalState as RootStateType, applyMiddleware(thunk))
 
 export const ReduxStoreProviderDecorator = (storyFn: any) => (
   <Provider store={storyBookStore}>

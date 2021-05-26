@@ -43,6 +43,19 @@ export const todolistAPI = {
   },
 }
 
+export const authAPI = {
+  login(loginData: LoginParamsType) {
+    return instance.post<CommonResponseType<{ userId: number }>>('auth/login', loginData)
+  },
+  logout() {
+    return instance.delete<CommonResponseType<{}>>('auth/login')
+  },
+  me() {
+    return instance.get<CommonResponseType<{ id: number, email: string, login: string }>>('auth/me')
+  },
+}
+
+
 // types
 export type CommonResponseType<T> = {
   resultCode: number
@@ -68,6 +81,7 @@ export enum TaskStatuses {
   Completed,
   Draft
 }
+
 export enum TaskPriorities {
   Low,
   Middle,
@@ -75,11 +89,13 @@ export enum TaskPriorities {
   Urgently,
   Later
 }
+
 // enum for server response resultcode
 export enum ResultCodeResponse {
   Succeed,
   Failed,
 }
+
 export type TaskType = {
   id: string
   title: string
@@ -92,7 +108,7 @@ export type TaskType = {
   todoListId: string
   order: number
   addedDate: string
-  entityStatus: RequestStatusType
+  entityTaskStatus: RequestStatusType
 }
 export type DomainModelUpdateTaskType = {
   title: string
@@ -115,3 +131,9 @@ export type TodolistType = TodoType & {
   entityStatus: RequestStatusType
 }
 export type FilterType = 'all' | 'active' | 'completed'
+export type LoginParamsType = {
+  email: string
+  password: string
+  rememberMe: boolean
+  captcha?: boolean
+}

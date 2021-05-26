@@ -17,3 +17,14 @@ EditableSpanExample.args = {
   title: 'Title value',
   editTitle: editTitleCallback,
 }
+export const EditableSpanDisabledExample = Template.bind({})
+EditableSpanDisabledExample.args = {
+  title: 'Title value',
+  editTitle: editTitleCallback, disabled: true,
+}
+export const EditableSpanLoadingExample = Template.bind({})
+EditableSpanLoadingExample.args = {
+  title: 'Title value',
+  editTitle: editTitleCallback,
+  entityStatus: 'loading',
+}
