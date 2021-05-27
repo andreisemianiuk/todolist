@@ -14,13 +14,13 @@ type PropsType = {
 
 export const TodolistsList: React.FC<PropsType> = ({demo = false}) => {
   const todolists = useSelector<RootStateType, TodolistType[]>(state => state.todolists)
-  const isLoggedIn = useSelector<RootStateType, boolean>(state => state.login.isLoggedIn)
+  const isLoggedIn = useSelector<RootStateType, boolean>(state => state.auth.isLoggedIn)
   const dispatch = useDispatch()
   
   useEffect(() => {
     if (demo || !isLoggedIn) return
     dispatch(fetchTodolistTC())
-  }, [dispatch, isLoggedIn])
+  }, [dispatch, isLoggedIn,demo])
   
   // functions for todolist
   const addTodolist = useCallback((title: string) => {

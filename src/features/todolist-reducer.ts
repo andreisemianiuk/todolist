@@ -55,11 +55,8 @@ export const changeTodolistTitleAC = (id: string, title: string) =>
 export const changeTodolistFilterAC = (id: string, filter: FilterType) =>
   ({type: 'CHANGE_TODOLIST_FILTER', filter, id} as const)
 export const setTodolistsAC = (todolists: TodoType[]) => ({type: 'SET_TODOLISTS', todolists} as const)
-export const setTodoEntityStatusAC = (id: string, status: RequestStatusType) => ({
-  type: 'SET_ENTITY_STATUS',
-  id,
-  status,
-} as const)
+export const setTodoEntityStatusAC = (id: string, status: RequestStatusType) =>
+  ({type: 'SET_ENTITY_STATUS', id, status} as const)
 
 // Thunk Creators
 export const fetchTodolistTC = () => (dispatch: Dispatch<ActionsType>) => {

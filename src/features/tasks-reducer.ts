@@ -9,11 +9,11 @@ const initialState: TasksListType = {}
 
 export const tasksReducer = (state = initialState, action: ActionsType): TasksListType => {
   switch (action.type) {
-    case 'REMOVE_TASK':
+    case 'SET_TASKS':
       return {
         ...state,
-        [action.todolistId]:
-          state[action.todolistId].filter(t => t.id !== action.taskId),
+        [action.todolistId]: action.tasks.map(
+          t => ({...t, entityTaskStatus: 'idle'})),
       }
     case 'ADD_TASK':
       return {
@@ -21,6 +21,14 @@ export const tasksReducer = (state = initialState, action: ActionsType): TasksLi
         [action.task.todoListId]:
           [{...action.task}, ...state[action.task.todoListId]],
       }
+    case 'REMOVE_TASK':
+      return {
+        ...state,
+        [action.todolistId]:
+          state[action.todolistId].filter(t => t.id !== action.taskId),
+      }
+    case 'DELETE_ALL_TASKS':
+      return {}
     case 'UPDATE_TASK':
       return {
         ...state,
@@ -29,6 +37,19 @@ export const tasksReducer = (state = initialState, action: ActionsType): TasksLi
           ...action.model,
         } : t),
       }
+    case 'SET_TASK_ENTITY_STATUS':
+      return {
+        ...state,
+        [action.todolistId]: [...state[action.todolistId].map(
+          t => t.id === action.taskId ? {...t, entityTaskStatus: action.status} : t)],
+      }
+    case 'SET_TODOLISTS': {
+      const copy = {...state}
+      action.todolists.forEach((tl) => {
+        copy[tl.id] = []
+      })
+      return copy
+    }
     case 'ADD_TODOLIST':
       return {
         ...state,
@@ -38,25 +59,6 @@ export const tasksReducer = (state = initialState, action: ActionsType): TasksLi
       const copy = {...state}
       delete copy[action.id]
       return copy
-    case 'SET_TODOLISTS': {
-      const copy = {...state}
-      action.todolists.forEach((tl) => {
-        copy[tl.id] = []
-      })
-      return copy
-    }
-    case 'SET_TASKS':
-      return {
-        ...state,
-        [action.todolistId]: action.tasks.map(
-          t => ({...t, entityTaskStatus: 'idle'})),
-      }
-    case 'SET_TASK_ENTITY_STATUS':debugger
-      return {
-        ...state,
-        [action.todolistId]: [...state[action.todolistId].map(
-          t => t.id === action.taskId ? {...t, entityTaskStatus: action.status} : t)],
-      }
     default:
       return state
   }
@@ -65,6 +67,7 @@ export const tasksReducer = (state = initialState, action: ActionsType): TasksLi
 // Action Creators
 export const setTasksAC = (tasks: TaskType[], todolistId: string) => ({type: 'SET_TASKS', tasks, todolistId} as const)
 export const addTaskAC = (task: TaskType) => ({type: 'ADD_TASK', task} as const)
+export const deleteAllTasksAC = () => ({type: 'DELETE_ALL_TASKS'} as const)
 export const removeTaskAC = (taskId: string, todolistId: string) =>
   ({type: 'REMOVE_TASK', taskId, todolistId} as const)
 export const updateTaskAC = (todolistId: string, taskId: string, model: ModelUpdateTaskType) =>
@@ -122,7 +125,7 @@ export const deleteTaskTC = (todolistId: string, taskId: string) => (dispatch: D
     })
 }
 export const updateTaskTC = (todolistId: string, taskId: string, model: ModelUpdateTaskType) =>
-  (dispatch: Dispatch<ActionsType>, getState: () => RootStateType) => {debugger
+  (dispatch: Dispatch<ActionsType>, getState: () => RootStateType) => {
     dispatch(setAppStatusAC('loading'))
     dispatch(setTaskEntityStatusAC(todolistId, taskId, 'loading'))
     const allTasksFromState = getState().tasks
@@ -139,7 +142,7 @@ export const updateTaskTC = (todolistId: string, taskId: string, model: ModelUpd
         status: task.status,
         ...model,
         
-      }).then((res) => {debugger
+      }).then((res) => {
         if (res.data.resultCode === ResultCodeResponse.Succeed) {
           dispatch(updateTaskAC(todolistId, taskId, model))
           dispatch(setAppStatusAC('succeeded'))
@@ -167,6 +170,7 @@ type ActionsType =
   | ReturnType<typeof addTaskAC>
   | ReturnType<typeof updateTaskAC>
   | ReturnType<typeof removeTaskAC>
+  | ReturnType<typeof deleteAllTasksAC>
   | ReturnType<typeof setAppStatusAC>
   | ReturnType<typeof setAppErrorAC>
   | ReturnType<typeof setTaskEntityStatusAC>

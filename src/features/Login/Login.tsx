@@ -10,7 +10,7 @@ import {
   Grid,
 } from '@material-ui/core'
 import { useFormik } from 'formik'
-import { loginUserTC } from './login-reducer'
+import { loginUserTC } from './auth-reducer'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootStateType } from '../../app/store'
 import { Redirect } from 'react-router-dom'
@@ -23,7 +23,7 @@ type FormikErrorType = {
 
 
 export const Login = () => {
-  const isLoggedIn = useSelector<RootStateType, boolean>(state => state.login.isLoggedIn)
+  const isLoggedIn = useSelector<RootStateType, boolean>(state => state.auth.isLoggedIn)
   const dispatch = useDispatch()
   const formik = useFormik({
     initialValues: {

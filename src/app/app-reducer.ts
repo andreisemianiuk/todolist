@@ -1,6 +1,6 @@
 import { Dispatch } from 'redux'
 import { authAPI, ResultCodeResponse } from '../api/todolist-api'
-import { setIsLoggedInAC } from '../features/Login/login-reducer'
+import { setIsLoggedInAC } from '../features/Login/auth-reducer'
 import { handleServerAppError, handleServerNetworkError } from '../utils/error-utils'
 
 export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'

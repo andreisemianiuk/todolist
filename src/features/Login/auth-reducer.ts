@@ -2,16 +2,18 @@ import { Dispatch } from 'redux'
 import { authAPI, LoginParamsType, ResultCodeResponse } from '../../api/todolist-api'
 import { handleServerAppError, handleServerNetworkError } from '../../utils/error-utils'
 import { setAppErrorAC, setAppStatusAC, setIsInitializedAppAC } from '../../app/app-reducer'
+import { setTodolistsAC } from '../todolist-reducer'
+import { deleteAllTasksAC } from '../tasks-reducer'
 
 const initialState = {
   isLoggedIn: false,
 }
 
-type InitialStateType = typeof initialState
+export type InitialAuthStateType = typeof initialState
 
-export const loginReducer = (state: InitialStateType = initialState, action: ActionTypes): InitialStateType => {
+export const authReducer = (state: InitialAuthStateType = initialState, action: ActionTypes): InitialAuthStateType => {
   switch (action.type) {
-    case 'LOGIN/SET_IS_LOGGED_IN':
+    case 'AUTH/SET_IS_LOGGED_IN':
       return {
         ...state,
         isLoggedIn: action.isLoggedIn,
@@ -21,7 +23,7 @@ export const loginReducer = (state: InitialStateType = initialState, action: Act
   }
 }
 
-export const setIsLoggedInAC = (isLoggedIn: boolean) => ({type: 'LOGIN/SET_IS_LOGGED_IN', isLoggedIn} as const)
+export const setIsLoggedInAC = (isLoggedIn: boolean) => ({type: 'AUTH/SET_IS_LOGGED_IN', isLoggedIn} as const)
 
 // thunks
 export const loginUserTC = (userLoginData: LoginParamsType) => (dispatch: Dispatch<ActionTypes>) => {
@@ -47,6 +49,9 @@ export const logoutUserTC = () => (dispatch: Dispatch<ActionTypes>) => {
     if (res.data.resultCode === ResultCodeResponse.Succeed) {
       dispatch(setIsLoggedInAC(false))
       dispatch(setAppStatusAC('succeeded'))
+      
+      dispatch(deleteAllTasksAC())
+      dispatch(setTodolistsAC([]))
     } else {
       handleServerAppError(res.data, dispatch)
     }
@@ -57,4 +62,6 @@ export const logoutUserTC = () => (dispatch: Dispatch<ActionTypes>) => {
 type ActionTypes = ReturnType<typeof setIsLoggedInAC
   | typeof setAppErrorAC
   | typeof setAppStatusAC
-  | typeof setIsInitializedAppAC>
+  | typeof setIsInitializedAppAC
+  | typeof deleteAllTasksAC
+  | typeof setTodolistsAC>

@@ -20,7 +20,8 @@ import { RequestStatusType, setAppInitializedTC } from './app-reducer'
 import { ErrorSnackbar } from '../components/ErrorSnackbar/ErrorSnackbar'
 import { Redirect, Route, Switch } from 'react-router-dom'
 import { Login } from '../features/Login/Login'
-import { logoutUserTC } from '../features/Login/login-reducer'
+import { logoutUserTC } from '../features/Login/auth-reducer'
+import { Error404 } from '../components/Error404/Error404'
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -44,7 +45,7 @@ export const App = ({demo = false}: PropsType) => {
   const classes = useStyles()
   const status = useSelector<RootStateType, RequestStatusType>(state => state.app.status)
   const isInitialized = useSelector<RootStateType, boolean>(state => state.app.isInitialized)
-  const isLoggedIn = useSelector<RootStateType, boolean>(state => state.login.isLoggedIn)
+  const isLoggedIn = useSelector<RootStateType, boolean>(state => state.auth.isLoggedIn)
   const dispatch = useDispatch()
   
   useEffect(() => {
@@ -81,12 +82,8 @@ export const App = ({demo = false}: PropsType) => {
         <Switch>
           <Route exact path={'/'} render={() => <TodolistsList demo={demo}/>}/>
           <Route exact path={'/login'} render={() => <Login/>}/>
-          <Route path={'/404'} render={() =>
-            <h1 style={{color: 'red', fontWeight: 'bold', textAlign: 'center'}}>
-              404: PAGE NOT FOUND
-            </h1>}
-          />
-          <Redirect from={'*'} to={'/404'}/>
+          <Route path={'/Error404'} render={() => <Error404/>}/>
+          <Redirect from={'*'} to={'/Error404'}/>
         </Switch>
       </Container>
     </div>
