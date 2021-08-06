@@ -83,7 +83,7 @@ export const App = ({demo = false}: PropsType) => {
           <Route exact path={'/'} render={() => <TodolistsList demo={demo}/>}/>
           <Route exact path={'/login'} render={() => <Login/>}/>
           <Route path={'/Error404'} render={() => <Error404/>}/>
-          <Redirect from={'*'} to={'/Error404'}/>
+          <Redirect from={'*'} to={'/'}/>
         </Switch>
       </Container>
     </div>

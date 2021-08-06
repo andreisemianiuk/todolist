@@ -71,6 +71,7 @@ export const fetchTodolistTC = () => (dispatch: Dispatch<ActionsType>) => {
 export const postTodolistTC = (title: string) => (dispatch: Dispatch<ActionsType>) => {
   dispatch(setAppStatusAC('loading'))
   todolistAPI.createTodolist(title).then(res => {
+    console.log(res)
     if (res.data.resultCode === ResultCodeResponse.Succeed) {
       dispatch(addTodolistAC(res.data.data.item))
       dispatch(setAppStatusAC('succeeded'))

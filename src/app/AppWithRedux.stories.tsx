@@ -10,5 +10,4 @@ export default {
 } as Meta
 
 const Template: Story = () => <App demo={true}/>
-
 export const AppWithReduxExample = Template.bind({})
