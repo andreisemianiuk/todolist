@@ -2,17 +2,15 @@ import React, { useCallback, useEffect } from 'react'
 import './App.css'
 import {
   AppBar,
-  Button, CircularProgress,
+  Button,
+  CircularProgress,
   Container,
   createStyles,
-  IconButton,
   LinearProgress,
   makeStyles,
   Theme,
   Toolbar,
-  Typography,
 } from '@material-ui/core'
-import MenuIcon from '@material-ui/icons/Menu'
 import { TodolistsList } from '../features/TodolistsList/TodolistsList'
 import { useDispatch, useSelector } from 'react-redux'
 import { RootStateType } from './store'
@@ -68,13 +66,9 @@ export const App = ({demo = false}: PropsType) => {
       <ErrorSnackbar/>
       <AppBar position="static">
         <Toolbar>
-          <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-            <MenuIcon/>
-          </IconButton>
-          <Typography variant="h6" className={classes.title}>
-            News
-          </Typography>
-          {isLoggedIn && <Button color="inherit" onClick={logout}>Logout</Button>}
+          <h2>Create your todo</h2>
+          {isLoggedIn &&
+          <Button style={{position: 'absolute', right: '20px'}} color="inherit" onClick={logout}>Logout</Button>}
         </Toolbar>
         {status === 'loading' && <LinearProgress/>}
       </AppBar>
